@@ -1,39 +1,65 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image  } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+export default function App()
 
-export default class myApp extends Component {
+const [selectedImage, setSelectedImage] = React.useState(null)
 
- Constructor(props) { 
-   super(props);
-   this.state = {count: 0};
- }
- onTap = () => { 
-   this.setState({
-      count: this.state.count + 1 
-   });
- }
+  let openImagePickerAsync = async () => { 
+    let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if ( permissionResult.granted === false){ 
+      alert('Permission is required');
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    if (pickerResult.cancelled === true) { 
+      return;
+    }
+    setSelectedImage({localUri: pickerResult.uri});
+  };
+
+  if(selectedImage !== null){ 
+    return(
+      <View style={styles.container}>
+          <Image
 
 
-  render(){
+      </View>
+  }
+  
+   
+
+
     const {count} = this.state; 
   return (
     <View style={styles.container}>
      <View style={styles.container}>
 
 
-     <Text> Tap Counter: {count} </Text>  
+     <Image source = {{uri=''}} style = {styles.logo}/>
+     <Text style = {styles.insts}> Press the button to select image 
+     
+     
+     </Text>  
+     
+     
+     
+     
      </View>
 
      <TouchableOpacity
        style = {styles.Button}
-       onPress = { this.onTap} >
+       onPress = { openImagePickerAsync} >
+         <Text Style= {styles.buttonText}>Pick Image </Text> 
          <Text> Touch Me </Text>
      </TouchableOpacity>
     </View>
   );
 }
-}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -53,5 +79,31 @@ padding: 10,
     alignItems: "center",
     padding:10
 
+  }, 
+  Insts: { 
+color: '#778999',
+marginHorizontal: 15, 
+
+  },
+  logo: { 
+    width: 305,
+    hieght: 300, 
+    marginBottom: 20, 
+
+
+  },
+
+  ButtonText: { 
+     fontsize:  20,
+
+  },
+
+  selImage: { 
+    width: 300, 
+    hieght: 300, 
+    }
+  
   }
-});
+  )
+
+
